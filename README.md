@@ -94,13 +94,31 @@ Every developer (and PM) follows this cycle:
 
 ## Git vs GitHub — What's the Difference?
 
-| | Git | GitHub |
-|---|---|---|
-| **What it is** | Version control software | Cloud platform built on top of Git |
-| **Where it lives** | Your local machine | The internet |
-| **Works without the other?** | Yes | No — GitHub needs Git |
-| **Main job** | Track changes, manage history | Collaborate, share, review code |
-| **PM analogy** | Your product changelog | Confluence + Jira, but for code |
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        GIT vs GITHUB                                │
+├────────────────────┬────────────────────────┬───────────────────────┤
+│                    │        GIT             │       GITHUB          │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ What it is         │ Version control        │ Cloud platform built  │
+│                    │ software (the engine)  │ on top of Git         │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ Where it lives     │ Your local machine     │ The internet          │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ Works standalone?  │ ✅ Yes                 │ ❌ Needs Git           │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ Main job           │ Track changes,         │ Collaborate, share,   │
+│                    │ manage history         │ review, ship code     │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ PM analogy         │ Your product changelog │ Confluence + Jira,    │
+│                    │ (local, private)       │ but for code (shared) │
+├────────────────────┼────────────────────────┼───────────────────────┤
+│ Key commands       │ commit, branch,        │ PR, Issues, Actions,  │
+│                    │ merge, log, diff       │ Releases, Wiki        │
+└────────────────────┴────────────────────────┴───────────────────────┘
+```
+
+> **One-liner:** Git tracks changes on your machine. GitHub is where your team sees them.
 
 ---
 
@@ -133,19 +151,41 @@ feature/checkout  feature/onboarding  fix/login-bug
 > A Pull Request (PR) is the equivalent of a **design review or PRD sign-off** — a structured checkpoint before anything goes live.
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                   PULL REQUEST FLOW                      │
-│                                                          │
-│  Developer         Reviewer            Product           │
-│  ──────────        ────────            ───────           │
-│  Opens PR    ───►  Reviews code  ───►  Checks impact     │
-│                    Leaves comments     Links to ticket   │
-│  Addresses   ◄───  Requests changes                      │
-│  feedback                              Approves / flags  │
-│                                                          │
-│  ──────────────────────────────────────────────────      │
-│               MERGE → ships to main branch               │
-└──────────────────────────────────────────────────────────┘
+  DEVELOPER                  REVIEWER                    PM / LEAD
+  ─────────                  ────────                    ─────────
+
+  1. Create branch
+     git checkout -b
+     feature/checkout
+         │
+         ▼
+  2. Write code &
+     commit changes
+     git commit -m "..."
+         │
+         ▼
+  3. Push to GitHub
+     git push origin
+     feature/checkout
+         │
+         ▼
+  4. Open Pull Request ──────► 5. Review code           6. Check product impact
+     • title + description       • read the diff            • acceptance criteria met?
+     • link to ticket            • leave comments           • edge cases covered?
+     • screenshots if UI    ◄─── • request changes          • approve or flag
+                                      │
+         ◄────────────────────────────┘
+  7. Address feedback
+     push more commits
+         │
+         ▼
+  8. All checks pass? ─────────────────────────────────► 9. Final approve
+     ✅ Tests green                                           │
+     ✅ No conflicts                                          ▼
+     ✅ Peer approved                                   10. MERGE
+                                                         └── code ships to main
+                                                         └── branch deleted
+                                                         └── ticket closed
 ```
 
 **PM Tip:** PRs have a description, linked issues, and comments — this is where your acceptance criteria lives in engineering workflow.
