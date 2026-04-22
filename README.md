@@ -1,362 +1,269 @@
-# GitHub for Product Managers
-### A Practical Guide for PMs Who Want to Work Like Engineers
+# GitHub for Product Managers — From Zero to Pro
+
+A practical tutorial for PMs who want to work inside codebases, speak the language of engineers, and use GitHub as a competitive edge in interviews, stakeholder communication, and day-to-day product work.
 
 ---
 
-## What is GitHub?
+## Why GitHub Matters for PMs
 
-> **Think of GitHub as "Facebook for Developers"** — a social platform where developers share, collaborate on, and manage code projects. Your activity board shows how active you are, just like a social feed.
+GitHub is where the product actually gets built. Everything — features, experiments, bug fixes, deployment pipelines — flows through it. When you understand GitHub, you can:
 
-| Layer | What it is |
+- Track what shipped, when, and why — without asking an engineer
+- Write better specs by understanding how code is structured
+- Review PRs and catch scope creep or missing requirements before merge
+- Use your GitHub profile as a product portfolio that shows real shipping velocity
+- Interview with confidence when asked "tell me about your technical depth"
+
+---
+
+## What Is GitHub?
+
+GitHub is a cloud-based platform that stores and manages code. It's built on top of **Git**, a version control system that tracks every change ever made to a file.
+
+Think of it this way:
+
+| Analogy | GitHub Equivalent |
 |---|---|
-| **Git** | The engine — tracks every change to your code locally |
-| **GitHub** | The platform — hosts your code in the cloud and adds collaboration tools on top of Git |
+| Google Drive | Repository (code storage) |
+| "Track Changes" in Docs | Git version control |
+| Comment-and-suggest in Docs | Pull Request review |
+| Folder with version history | Branch |
+| Save + label a doc version | Commit |
 
-```
-YOUR COMPUTER                    GITHUB (Cloud)
-┌─────────────┐                 ┌──────────────────────┐
-│             │   git push ───► │                      │
-│  Local      │                 │   Remote Repository  │
-│  Repository │ ◄─── git pull   │   (shared with team) │
-│             │                 │                      │
-└─────────────┘                 └──────────────────────┘
-```
+Big companies (Google, Microsoft, Airbnb) and solo developers all use it. It's the Facebook for developers — you can see who's active, what they're building, and how they collaborate.
 
 ---
 
-## Key Terms — Plain English for PMs
+## Core Concepts: The PM's Cheat Sheet
+
+### Repository (Repo)
+A project folder that tracks all code and its full change history. Every project lives in a repo. You can have one repo per product, or one repo per team.
+
+**PM takeaway:** Repos are where your roadmap becomes code. Understanding a repo's structure tells you how modular (or tangled) your product is.
+
+### Branch
+A parallel version of the codebase for isolated development. The main branch (`main` or `master`) is what's live in production. Engineers create feature branches to build without breaking the live product.
+
+**PM takeaway:** Branches map directly to your product experiments. An A/B test? Two branches. A risky new feature? Its own branch until it's proven.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        GITHUB                               │
-│          The platform that hosts your codebase              │
-│                                                             │
-│   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐  │
-│   │ REPOSITORY  │     │   BRANCH    │     │   COMMIT    │  │
-│   │             │     │             │     │             │  │
-│   │ Project     │     │ Isolated    │     │ Snapshot    │  │
-│   │ folder with │     │ copy for    │     │ of changes  │  │
-│   │ full history│     │ new feature │     │ with a note │  │
-│   └─────────────┘     └─────────────┘     └─────────────┘  │
-│                                                             │
-│   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐  │
-│   │    CLONE    │     │ PULL REQUEST│     │    ISSUE    │  │
-│   │             │     │             │     │             │  │
-│   │ Copy a repo │     │ Formal ask  │     │ Bug, feature│  │
-│   │ to your     │     │ to merge    │     │ request, or │  │
-│   │ computer    │     │ your work   │     │ feedback    │  │
-│   └─────────────┘     └─────────────┘     └─────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+main (production)
+ ├── feature/checkout-redesign
+ ├── experiment/new-onboarding-flow
+ └── fix/payment-bug
 ```
 
----
+### Commit
+Saving a snapshot of changes with a message explaining what changed and why. Every commit is timestamped and attributed to a person.
 
-## How Git Works — The Core Loop
+**PM takeaway:** Commit messages are a living changelog. Good commit messages make retrospectives, postmortems, and release notes dramatically easier. Push your team to write them for humans, not just machines.
 
-Every developer (and PM) follows this cycle:
-
+Good commit message:
 ```
-                        ┌───────────────────────┐
-                        │    REMOTE REPO        │
-                        │    (GitHub.com)       │
-                        └───────────┬───────────┘
-                                    │
-                  ┌─────────────────▼──────────────────┐
-                  │            git clone                │
-                  │     (copy repo to your machine)     │
-                  └─────────────────┬──────────────────┘
-                                    │
-                        ┌───────────▼───────────┐
-                        │    LOCAL REPO         │
-                        │    (your computer)    │
-                        └───────────┬───────────┘
-                                    │
-          ┌─────────────────────────▼──────────────────────────┐
-          │                                                     │
-          ▼                         ▼                          ▼
-   ┌─────────────┐          ┌──────────────┐          ┌──────────────┐
-   │  git branch │          │  git commit  │          │  git push    │
-   │             │          │              │          │              │
-   │ Create new  │ ──edit──►│ Save snapshot│ ────────►│ Upload to    │
-   │ feature     │          │ with message │          │ GitHub       │
-   │ branch      │          │              │          │              │
-   └─────────────┘          └──────────────┘          └──────┬───────┘
-                                                             │
-                                                    ┌────────▼────────┐
-                                                    │  PULL REQUEST   │
-                                                    │                 │
-                                                    │ Team reviews →  │
-                                                    │ Approve → Merge │
-                                                    └─────────────────┘
+Add confidence score to contract review output
+
+Closes #142 — users were unsure whether to trust the AI output.
+Score now shows 0–100% with color coding.
 ```
 
----
-
-## Git vs GitHub — What's the Difference?
-
+Bad commit message:
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        GIT vs GITHUB                                │
-├────────────────────┬────────────────────────┬───────────────────────┤
-│                    │        GIT             │       GITHUB          │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ What it is         │ Version control        │ Cloud platform built  │
-│                    │ software (the engine)  │ on top of Git         │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ Where it lives     │ Your local machine     │ The internet          │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ Works standalone?  │ ✅ Yes                 │ ❌ Needs Git           │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ Main job           │ Track changes,         │ Collaborate, share,   │
-│                    │ manage history         │ review, ship code     │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ PM analogy         │ Your product changelog │ Confluence + Jira,    │
-│                    │ (local, private)       │ but for code (shared) │
-├────────────────────┼────────────────────────┼───────────────────────┤
-│ Key commands       │ commit, branch,        │ PR, Issues, Actions,  │
-│                    │ merge, log, diff       │ Releases, Wiki        │
-└────────────────────┴────────────────────────┴───────────────────────┘
+fix stuff
 ```
 
-> **One-liner:** Git tracks changes on your machine. GitHub is where your team sees them.
-
----
-
-## Branching — The A/B Test Analogy for PMs
-
-> A branch is like running an **A/B test on your codebase** — you isolate the experiment from the live product until it's proven and ready.
-
-```
-MAIN BRANCH (production — what users see)
-────────────────────────────────────────────────────────►
-    │               │                   │
-    │               │                   │
-    ▼               ▼                   ▼
-feature/checkout  feature/onboarding  fix/login-bug
-(Dev A working)   (Dev B working)     (Dev C working)
-
-        ↓ Pull Request + Review ↓
-
-────────────────────●───────────────────────────────────►
-                  MERGE
-              (feature ships)
-```
-
-**PM Takeaway:** Branching lets your team work on 5 things simultaneously without breaking the product. Each branch = one story/epic in flight.
-
----
-
-## Pull Requests — Your Review Gate
-
-> A Pull Request (PR) is the equivalent of a **design review or PRD sign-off** — a structured checkpoint before anything goes live.
-
-```
-  DEVELOPER                  REVIEWER                    PM / LEAD
-  ─────────                  ────────                    ─────────
-
-  1. Create branch
-     git checkout -b
-     feature/checkout
-         │
-         ▼
-  2. Write code &
-     commit changes
-     git commit -m "..."
-         │
-         ▼
-  3. Push to GitHub
-     git push origin
-     feature/checkout
-         │
-         ▼
-  4. Open Pull Request ──────► 5. Review code           6. Check product impact
-     • title + description       • read the diff            • acceptance criteria met?
-     • link to ticket            • leave comments           • edge cases covered?
-     • screenshots if UI    ◄─── • request changes          • approve or flag
-                                      │
-         ◄────────────────────────────┘
-  7. Address feedback
-     push more commits
-         │
-         ▼
-  8. All checks pass? ─────────────────────────────────► 9. Final approve
-     ✅ Tests green                                           │
-     ✅ No conflicts                                          ▼
-     ✅ Peer approved                                   10. MERGE
-                                                         └── code ships to main
-                                                         └── branch deleted
-                                                         └── ticket closed
-```
-
-**PM Tip:** PRs have a description, linked issues, and comments — this is where your acceptance criteria lives in engineering workflow.
-
----
-
-## Decentralized Codebase — Why It Matters to PMs
-
-> Unlike a shared Google Doc, Git is **decentralized** — every contributor has a full copy of the project history. No single point of failure.
-
-```
-              ┌─────────────────────┐
-              │   GITHUB (origin)   │
-              │   Central source    │
-              └──────┬──────┬───────┘
-                     │      │
-          ┌──────────┘      └──────────┐
-          │                           │
-    ┌─────▼──────┐             ┌──────▼─────┐
-    │  Dev A     │             │  Dev B     │
-    │  Full copy │             │  Full copy │
-    │  of repo   │             │  of repo   │
-    └────────────┘             └────────────┘
-          │                           │
-    ┌─────▼──────┐             ┌──────▼─────┐
-    │  Dev C     │             │  PM / You  │
-    │  Full copy │             │  Full copy │
-    │  of repo   │             │  of repo   │
-    └────────────┘             └────────────┘
-```
-
----
-
-## PM Use Cases on GitHub
-
-### 1. Version Control → Track Product Iterations
-
-```
-v1.0 ──► v1.1 ──► v1.2 ──► v2.0
-  │         │        │        │
-checkout  search   filters  redesign
-launched  added    shipped  launched
-
-← full history, always recoverable →
-```
-
-### 2. Issues → Your Lightweight Backlog
-
-```
-┌─────────────────────────────────────────┐
-│  GitHub Issues                          │
-│                                         │
-│  🔴 Bug:  Login fails on mobile  #142   │
-│  🟡 Feature: Add CSV export     #138   │
-│  🟢 Docs:  Update onboarding    #129   │
-│                                         │
-│  Labels │ Assignees │ Milestones        │
-│  Comments │ Linked PRs                  │
-└─────────────────────────────────────────┘
-```
-
-**PM Tip:** GitHub Issues + Milestones can replace basic Jira for small teams.
-
-### 3. README → Your Living PRD
-
-> The README is the first thing anyone sees in a repo. Think of it as the **one-pager every PM should own** — problem, context, how it works.
-
-### 4. Commit Messages → Your Changelog
-
-```
-Bad commit:   "fixed stuff"
-Good commit:  "fix: checkout flow skips address validation for guest users (#142)"
-
-                ↑                ↑                            ↑
-             type           clear description            issue linked
-```
-
-**PM analogy:** Every commit is a release note. If your team writes good commits, your changelog writes itself.
-
-### 5. GitHub as Your Portfolio
-
-```
-Your GitHub Profile
-┌────────────────────────────────────────────────────┐
-│  @yourhandle                                        │
-│                                                     │
-│  Activity Graph  ████░░████████░░░░███████          │
-│  (shows consistency — recruiters look at this)     │
-│                                                     │
-│  Pinned Repos:                                      │
-│  ├── product-case-studies (PRDs, teardowns)        │
-│  ├── ai-pm-resources (research, frameworks)        │
-│  └── my-test- (this repo!)                         │
-└────────────────────────────────────────────────────┘
-```
-
----
-
-## GitHub Actions — CI/CD in Plain English
-
-> GitHub Actions = **automated quality gates**. Every time code is pushed, GitHub can automatically run tests, checks, and deployments.
-
-```
-Developer pushes code
-        │
-        ▼
-┌───────────────────┐
-│  GitHub Actions   │
-│  (triggered auto) │
-├───────────────────┤
-│  ✅ Run tests      │
-│  ✅ Check style    │
-│  ✅ Build app      │
-│  ✅ Deploy to prod │
-└───────────────────┘
-        │
-        ▼
-   Pass → Ships     Fail → Blocked (notifies team)
-```
-
-**PM Takeaway:** When engineers say "CI/CD pipeline," this is it. It's your automated regression test before every release.
-
----
-
-## Tools You'll Use
-
-| Tool | What it's for | PM uses it to... |
-|---|---|---|
-| **GitHub.com** | Browse repos, PRs, issues | Review work, track releases, manage docs |
-| **VS Code** | Edit files locally | Write PRDs in repo, edit README, read code |
-| **Git (terminal)** | Run git commands | Clone, branch, commit, push |
-| **GitHub CLI** | Git + GitHub from terminal | Faster PR creation, issue management |
-
----
-
-## Quick Reference — Commands PMs Actually Use
+### Clone
+Copying a repository from GitHub to your local machine so you can view or edit files. You only need to do this once per project.
 
 ```bash
-# Get a copy of the repo on your machine
-git clone https://github.com/org/repo.git
+git clone https://github.com/your-org/your-repo.git
+```
 
-# See what branch you're on
-git status
+### Pull / Push
+- **Pull** — download the latest changes from GitHub to your local machine
+- **Push** — upload your local changes back to GitHub
 
-# Create a new branch (e.g. for a new doc or PRD)
-git checkout -b docs/q2-roadmap
+```bash
+git pull   # get latest from GitHub
+git push   # send your changes to GitHub
+```
 
-# Stage your changes
-git add .
+### Pull Request (PR)
+A formal request to merge a completed feature branch into `main`. PRs are where code gets reviewed, discussed, and approved before it goes live.
 
-# Save a snapshot with a message
-git commit -m "docs: add Q2 roadmap to product folder"
+**PM takeaway:** PRs are the gate between "built" and "shipped." They're where you can catch missing requirements, ask "does this match the spec?", and see exactly what's changing. Reading PRs is one of the highest-leverage habits a PM can build.
 
-# Upload to GitHub
-git push origin docs/q2-roadmap
+---
+
+## Git vs. GitHub — What's the Difference?
+
+| | Git | GitHub |
+|---|---|---|
+| What it is | Version control software | Cloud platform built on Git |
+| Where it runs | Your local machine | The internet |
+| What it does | Tracks changes in files | Hosts repos, manages collaboration, runs automations |
+| Analogy | The engine | The car |
+
+You can use Git without GitHub (local only). You cannot use GitHub without Git underneath it.
+
+---
+
+## The PM Workflow: Step by Step
+
+This is the standard loop you'll use to make changes — editing a README, updating a spec file, or reviewing a PR.
+
+### Step 1 — Clone the Repo (one time)
+```bash
+git clone https://github.com/your-org/your-repo.git
+cd your-repo
+```
+
+### Step 2 — Create a Branch for Your Work
+```bash
+git checkout -b docs/update-prd-q2
+```
+Name branches descriptively. `docs/update-prd-q2` tells anyone what this branch is for.
+
+### Step 3 — Make Your Changes
+Edit files using VS Code (see below) or any text editor.
+
+### Step 4 — Stage and Commit Your Changes
+```bash
+git add README.md
+git commit -m "Update Q2 PRD with revised success metrics"
+```
+
+### Step 5 — Push to GitHub
+```bash
+git push origin docs/update-prd-q2
+```
+
+### Step 6 — Open a Pull Request
+Go to GitHub in your browser → your repo → you'll see a banner to open a PR from your branch. Add a description, tag reviewers, and submit.
+
+### Step 7 — Merge After Review
+Once approved, merge the PR into `main`. Your changes are now in the main codebase.
+
+---
+
+## PM Use Cases — Where This Actually Helps You
+
+### Version Control for Product Work
+Track every iteration of a PRD, spec, or README. Roll back to any prior version. No more "which doc is the latest?" — GitHub is the source of truth.
+
+### Commit Messages as a Changelog
+Require your team to write meaningful commit messages. At sprint review or in a postmortem, you can reconstruct exactly what changed and when, without a meeting.
+
+### Branching for Experiments
+Map feature flags and A/B tests to branches. Each experiment is isolated — you can kill it cleanly without touching the rest of the product.
+
+### Pull Requests as a Review Gate
+Read PRs before they merge. Ask: "Does this implementation match the spec? Is the edge case handled? Is the error state designed?" You don't need to read the code line-by-line — read the description, the files changed, and the comments.
+
+### Issues for Feedback Loops
+GitHub Issues is a built-in bug/feature tracker. Link user feedback directly to issues. Tag issues with `bug`, `enhancement`, `PM-review`. Creates a closed loop between user signal and eng work.
+
+### README and PRDs as Living Documentation
+Your PRD lives in the repo, versioned alongside the code. When the spec changes, the commit history shows who changed it and why. No Confluence drift.
+
+### GitHub Actions — CI/CD Without the Mystery
+GitHub Actions automates testing and deployment. When code is pushed, tests run automatically. When tests pass, it deploys. As a PM, you don't need to configure this — but you should know:
+- A red check mark on a PR = tests failing = don't merge
+- A green check mark = safe to ship (technically)
+- Failed deployment = check the Actions tab for the error log
+
+### GitHub as Your Portfolio
+Your GitHub profile shows contribution activity — every commit, PR, and repo you touch. For PM interviews, a profile with real shipped work is more convincing than a slide deck of case studies.
+
+---
+
+## VS Code — Your Code Editor
+
+VS Code (Visual Studio Code) is a free code editor by Microsoft. It's what most engineers use day-to-day. You don't need to write code to benefit from it — it's excellent for:
+
+- Reading and editing Markdown files (PRDs, READMEs, specs)
+- Navigating a codebase to understand product structure
+- Viewing Git history and diffs visually with the built-in Git panel
+- Using GitHub Copilot or Claude integrations for AI-assisted writing
+
+**Install:** [code.visualstudio.com](https://code.visualstudio.com) — free, Mac/Windows/Linux.
+
+Once installed, open a repo folder:
+```bash
+code /path/to/your-repo
+```
+Or open VS Code and use File → Open Folder.
+
+---
+
+## Quick Reference: Commands You'll Actually Use
+
+```bash
+# Setup (one time per machine)
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+
+# Start working
+git clone <repo-url>          # copy repo to your machine
+git pull                      # get latest changes
+
+# Make changes
+git checkout -b <branch-name> # create and switch to a new branch
+git status                    # see what files you've changed
+git add <filename>            # stage a file for commit
+git add .                     # stage all changed files
+git commit -m "message"       # save a snapshot with a label
+
+# Share your work
+git push origin <branch-name> # send your branch to GitHub
+
+# Catch up with teammates
+git pull origin main          # pull latest from main into your branch
 ```
 
 ---
 
-## Agile Mindset: Consistency Over Perfection
+## Interview: How to Talk About GitHub as a PM
 
-> GitHub rewards **iteration** — small, frequent commits over infrequent big ones. This is the same as shipping MVPs over waiting for perfect.
+When an interviewer asks about your technical depth, these are the answers that land:
 
-```
-❌ Wrong approach:          ✅ Right approach:
-Work 3 weeks in silence     Commit daily, even small changes
-Push 500-line dump          PRs stay small + reviewable
-One giant PR                Team sees progress in real time
-Merge conflicts everywhere  Fewer conflicts, faster reviews
-```
+**"How do you work with engineers day-to-day?"**
+> "I review PRs before merge to verify the implementation matches the spec. I use commit history to prep for retrospectives and track what shipped between releases."
+
+**"Are you technical?"**
+> "I work in GitHub daily — I track issues, write and version specs in the repo, and I know enough to read a PR diff and ask the right questions. I don't write production code, but I stay close to the codebase."
+
+**"Tell me about a time you caught a bug or requirement gap."**
+> "I was reviewing a PR before merge and noticed a missing empty state for the case where search returns zero results. The spec covered the happy path but not the error state — caught it before it shipped."
 
 ---
 
-*Built with notes from the PM Dev Tools Workshop. Next step: open VS Code, clone this repo, and make your first commit.*
+## What to Do This Week
+
+1. Create a free GitHub account at github.com
+2. Install VS Code and Git
+3. Clone a public repo (try `github.com/github/docs`) — just to see how it works
+4. Create your own repo, add a README with your product philosophy
+5. Make a change, commit it, push it — do the full loop once
+6. Find an open-source PM-adjacent project and read 3 pull requests
+
+---
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| Repository | Project folder with full change history |
+| Clone | Copy a repo to your local machine |
+| Branch | Isolated version of code for parallel development |
+| Commit | Saved snapshot of changes with a message |
+| Pull | Download latest changes from GitHub |
+| Push | Upload local changes to GitHub |
+| Pull Request (PR) | Request to merge a branch + code review gate |
+| Merge | Combining a branch's changes into another branch |
+| Main / Master | The primary branch — what's live in production |
+| Issue | A tracked bug, feature request, or task |
+| GitHub Actions | Automated workflows (testing, deployment) |
+| CI/CD | Continuous Integration / Continuous Deployment — automated build-test-deploy pipeline |
+| Git | The version control system underneath GitHub |
+| Fork | Your own copy of someone else's repo |
+| README | The front page of a repo — what it is and how to use it |
