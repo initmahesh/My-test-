@@ -1,6 +1,6 @@
 # GitHub for Product Managers — From Zero to Pro
 
-A practical tutorial for PMs who want to work inside codebases, speak the language of engineers, and use GitHub as a competitive edge in interviews, stakeholder communication, and day-to-day product work.
+A practical tutorial by mahesh for PMs who want to work inside codebases, speak the language of engineers, and use GitHub as a competitive edge in interviews, stakeholder communication, and day-to-day product work.
 
 ---
 
